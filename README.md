@@ -1,67 +1,78 @@
 # Victor Chaves Official Store
-## Premium Music & Video DVD E-Commerce Marketplace
 
-### What's Included
-A complete, production-ready single-page e-commerce application with:
+Premium music and video e-commerce storefront for Victor Chaves.
 
-**Storefront**
-- Responsive hero section with live concert photos
-- Product catalogue with 6 seeded products (Blu-ray, DVD, 4K UHD, Vinyl LP, Box Sets)
-- Smart search and category filtering
-- Product detail pages with image galleries, tracklists, and specs
-- Shopping cart with quantity management
-- Secure checkout with configurable payment methods
-- Order tracking by order number + email
-- Customer account system (register/login)
+## Included in the original project archive
+
+- `index.html` — application shell and page layout
+- `styles.css` — responsive dark-theme styling
+- `app.js` — storefront, customer account, cart, checkout screens, order tracking, contact form, and admin interface
+- `images/` — 21 supplied product and artist images
+
+The application is written in vanilla HTML, CSS, and JavaScript. It has no build step or package dependencies and uses hash-based client-side routing. Open `index.html` in a browser to run the standalone demo.
+
+## Storefront features
+
+- Responsive hero section and product catalogue
+- Search and category filtering
+- Product details, galleries, tracklists, and specifications
+- Shopping cart and checkout screens
+- Order lookup by order number and email
+- Customer registration and sign-in screens
 - Contact/inquiry form
-- Multilingual support (English + Portuguese)
+- English and Portuguese interface
 
-**Admin Dashboard**
-- Admin login (email: oficialvictorchaves@gmail.com)
-- First-time password setup
-- Dashboard overview with sales stats, low-stock alerts
-- Product Management: add, edit, delete products, set prices, manage stock
-- Order Management: view orders, update order status
-- Payment Methods: enable/disable methods, edit names and instructions
-- Customer Inquiries: view and resolve contact messages
-- Analytics: revenue, orders, customers, sales charts
-- Settings: change currency, language, admin password
+## Admin interface
 
-**Data Persistence**
-The supplied original application stores products, orders, inquiries, payment methods, settings, cart and sessions in browser localStorage. This is a frontend-only demo, not server-backed production checkout.
+- Admin route: `/#/admin`
+- Admin email configured in the original frontend: `oficialvictorchaves@gmail.com`
+- First-time password setup is prompted by the frontend
 
-### How to Use
-1. Open `index.html` in a modern browser or deploy the folder as a static site.
-2. Browse products, add items to cart and use the checkout demo.
-3. Open `/#/admin` for the admin dashboard.
-4. Admin email: `oficialvictorchaves@gmail.com`.
-5. Set a password on first admin login.
+The original admin login and data are implemented in browser JavaScript and browser storage. This is not server-side authentication.
 
-### Payment Methods (Admin Configurable)
+## Important: current security and payment limitations
+
+**This archive is a frontend demo, not a production-ready e-commerce system.**
+
+The original application stores products, orders, inquiries, payment settings, cart state, customer sessions, and admin credentials in browser `localStorage`. Browser-side data and password checks are not secure and are not shared reliably between customers or devices.
+
+The checkout screens do not by themselves process payments. Listing Stripe, PayPal, MB WAY, PIX, or bank transfer as a payment option does not mean a live payment integration exists.
+
+Do not collect real payment details, accept live orders, or rely on the browser-based admin login for production operations until a secure backend and payment provider integration have been implemented and tested.
+
+## Cloudflare deployment status
+
+The Cloudflare account currently has a static storefront Worker named `projeto-vc-ordem` and a separate D1-backed admin/API Worker named `victor-chaves-admin`. The admin Worker has a D1 binding, but the original browser application still uses `localStorage`; it has not yet been connected to those API routes. The separate admin Worker is also protected by Cloudflare Access.
+
+Consequently, the presence of the Workers and database does not mean the storefront is fully integrated with the backend. Verify the live deployment and complete the frontend/API integration before using the store for real customers.
+
+## Payment methods shown in the original admin UI
+
 - Bank Transfer
 - PayPal
-- Credit Card (Stripe-ready)
+- Credit Card (described as Stripe-ready)
 - MB WAY
 - PIX
 
-### Production Requirements
-The supplied project is frontend-only. Before accepting real orders/payments, connect a server-side database, secure server-side authentication, payment-provider APIs, and email delivery. Browser localStorage is not a shared order database.
+These are configurable UI options only unless separately connected to working payment services.
 
-### File Structure
+## Production work still required
+
+1. Upload and deploy the complete original source archive, including all 21 images, to the storefront hosting project.
+2. Connect storefront product, order, and inquiry operations to the D1-backed API.
+3. Implement server-side customer and administrator authentication, authorization, and session handling.
+4. Add verified payment-provider integrations and server-side payment confirmation/webhooks.
+5. Add server-side validation, rate limiting, spam protection, and appropriate data-retention controls.
+6. Configure transactional email for order and inquiry notifications.
+7. Test storefront, admin access, order flow, database persistence, and payment sandbox flows before launch.
+
+## Original project structure
+
 ```
-index.html
-styles.css
-app.js
-images/                 # Original product and artist photos
-README.md
+victor-chaves-store/
+  index.html
+  styles.css
+  app.js
+  images/          # 21 supplied images
+  README.md
 ```
-
-### Tech Stack
-- Vanilla HTML5, CSS3, JavaScript (ES6+)
-- No build step required
-- No external dependencies
-- Hash-based client-side routing
-- CSS Custom Properties for theming
-
-### Security Note
-Admin authentication and data storage in the supplied archive are client-side. Do not use this demo as a production payment or authentication system without a secure backend.
