@@ -40,11 +40,15 @@ The checkout screens do not by themselves process payments. Listing Stripe, PayP
 
 Do not collect real payment details, accept live orders, or rely on the browser-based admin login for production operations until a secure backend and payment provider integration have been implemented and tested.
 
+The original archive also contains a separate credentials reference file with a plaintext password. That file is intentionally excluded from this repository and must never be published. Rotate that password anywhere it may have been reused.
+
 ## Cloudflare deployment status
 
-The Cloudflare account currently has a static storefront Worker named `projeto-vc-ordem` and a separate D1-backed admin/API Worker named `victor-chaves-admin`. The admin Worker has a D1 binding, but the original browser application still uses `localStorage`; it has not yet been connected to those API routes. The separate admin Worker is also protected by Cloudflare Access.
+The Cloudflare account currently has a static storefront Worker named `projeto-vc-ordem` and a separate admin/API Worker named `victor-chaves-admin`. On 2026-11-20, the admin Worker was rolled back to its earlier deployed version because the newer version had removed its required D1 binding. The active deployment is now version `8b091664-f7de-492b-8dd1-145196539a56` at 100% traffic, and that version declares the D1 binding `DB` to database `vc_store_data`.
 
-Consequently, the presence of the Workers and database does not mean the storefront is fully integrated with the backend. Verify the live deployment and complete the frontend/API integration before using the store for real customers.
+The original browser application still uses `localStorage`; it has not yet been connected to those API routes. The separate admin Worker is protected by Cloudflare Access. Its current Access/Worker identity is `theovonmanagement4@gmail.com`, which differs from the original frontend admin email `oficialvictorchaves@gmail.com`; do not assume the two login systems are interchangeable.
+
+Consequently, the restored D1 binding repairs the admin Worker configuration, but the presence of the Workers and database does not mean the storefront is fully integrated with the backend. Complete and test the frontend/API integration before using the store for real customers.
 
 ## Payment methods shown in the original admin UI
 
