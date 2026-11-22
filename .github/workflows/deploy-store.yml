@@ -1,0 +1,38 @@
+name: Deploy Victor Chaves Store to Cloudflare
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download verified store release
+        run: |
+          curl --fail --location --retry 3 \
+            "https://github.com/jacksonkbig-cpu/Victor-Chaves-official-store-/releases/download/store-package-v1/victor-chaves-store-sanitized.zip" \
+            --output store-package.zip
+      - name: Prepare static site
+        run: |
+          mkdir extracted public
+          unzip -q store-package.zip -d extracted
+          INDEX_FILE="$(find extracted -type f -name index.html -print -quit)"
+          if [ -z "$INDEX_FILE" ]; then
+            echo "The release archive does not contain index.html"
+            exit 1
+          fi
+          SITE_DIR="$(dirname "$INDEX_FILE")"
+          cp -a "$SITE_DIR"/. public/
+          test -s public/index.html
+          test -s public/styles.css
+          test -s public/app.js
+          test -d public/images
+      - name: Deploy static assets to Cloudflare Workers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: f39bf14115c395937493d7fe5ff3020a
+        run: |
+          npx --yes wrangler@4 deploy --assets ./public --name projeto-vc-ordem --compatibility-date 2026-11-22
